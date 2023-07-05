@@ -1,0 +1,235 @@
+[strip-0]
+label = "Onyx mic"
+A1 = false
+A2 = false
+A3 = false
+A4 = false
+A5 = false
+B1 = true
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = true
+gain = 0.0
+limit = 0
+comp.knob = 0
+gate.knob = 0
+
+[strip-1]
+label = "Iris mic"
+A1 = false
+A2 = false
+A3 = false
+A4 = false
+A5 = false
+B1 = false
+B2 = true
+B3 = false
+mono = false
+solo = false
+mute = true
+gain = 0.0
+limit = 0
+comp.knob = 0
+gate.knob = 0
+
+[strip-2]
+label = "Onyx Pc"
+A1 = false
+A2 = false
+A3 = false
+A4 = false
+A5 = true
+B1 = false
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = true
+gain = 0.0
+limit = 0
+comp.knob = 0
+gate.knob = 0
+
+[strip-3]
+label = "Iris Pc"
+A1 = false
+A2 = false
+A3 = false
+A4 = false
+A5 = true
+B1 = false
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = true
+gain = 0.0
+limit = 0
+comp.knob = 0
+gate.knob = 0
+
+[strip-4]
+label = "Mics to Stream"
+A1 = false
+A2 = false
+A3 = false
+A4 = false
+A5 = false
+B1 = false
+B2 = false
+B3 = true
+mono = false
+solo = false
+mute = true
+gain = 0.0
+limit = 0
+comp.knob = 0
+gate.knob = 0
+
+[strip-5]
+label = "System"
+A1 = false
+A2 = true
+A3 = false
+A4 = false
+A5 = false
+B1 = false
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = false
+gain = 0.0
+limit = 0
+
+[strip-6]
+label = "Comms"
+A1 = false
+A2 = false
+A3 = true
+A4 = false
+A5 = false
+B1 = false
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = false
+gain = 0.0
+limit = 0
+k = 0
+
+[strip-7]
+label = "Pretzel"
+A1 = false
+A2 = false
+A3 = false
+A4 = true
+A5 = false
+B1 = false
+B2 = false
+B3 = false
+mono = false
+solo = false
+mute = false
+gain = 0.0
+limit = 0
+
+[bus-0]
+label = "MR18"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-1]
+label = "ASIO [1,2]"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-2]
+label = "ASIO [3,4]"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-3]
+label = "ASIO [5,6]"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-4]
+label = "ASIO [7,8]"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-5]
+label = "Onyx Mic"
+mono = false
+eq.on = false
+mute = true
+gain = 0.0
+mode = "normal"
+
+[bus-6]
+label = "Iris Mic"
+mono = false
+eq.on = false
+mute = true
+gain = 0.0
+mode = "normal"
+
+[bus-7]
+label = "Both Mics"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[button-0]
+stateonly = true
+
+[button-1]
+stateonly = false
+
+[button-2]
+stateonly = true
+
+[vban-out-0]
+on = false
+
+[vban-out-1]
+on = false
+
+[vban-out-2]
+on = false
+
+[vban-out-3]
+on = false
+
+[vban-out-4]
+on = false
+
+[vban-out-5]
+on = false
+
+[vban-out-6]
+on = false
+
+[vban-out-7]
+on = false
