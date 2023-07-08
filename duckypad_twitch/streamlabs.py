@@ -3,9 +3,11 @@ import subprocess as sp
 import time
 import winreg
 from asyncio.subprocess import DEVNULL
+from functools import cached_property
 from pathlib import Path
 
 import slobs_websocket
+from slobs_websocket import StreamlabsOBS
 
 from . import configuration
 from .util import ensure_sl
@@ -14,14 +16,13 @@ logger = logging.getLogger(__name__)
 
 
 class StreamlabsController:
-    SL_FULLPATH = ""
-
     def __init__(self, duckypad, **kwargs):
         self.logger = logger.getChild(__class__.__name__)
         self._duckypad = duckypad
         for attr, val in kwargs.items():
             setattr(self, attr, val)
 
+        self.conn = StreamlabsOBS()
         self.proc = None
 
     ####################################################################################
@@ -98,24 +99,24 @@ class StreamlabsController:
     #   LAUNCH/SHUTDOWN the streamlabs process
     ####################################################################################
 
-    def launch(self, delay=5):
-        def get_slpath():
+    @cached_property
+    def sl_fullpath(self) -> Path:
+        try:
+            self.logger.debug("fetching sl_fullpath from the registry")
             SL_KEY = "029c4619-0385-5543-9426-46f9987161d9"
 
             with winreg.OpenKey(
                 winreg.HKEY_LOCAL_MACHINE, r"{}".format("SOFTWARE" + "\\" + SL_KEY)
             ) as regpath:
-                return winreg.QueryValueEx(regpath, r"InstallLocation")[0]
-
-        try:
-            if not self.SL_FULLPATH:  # so we only read from registry once.
-                self.SL_FULLPATH = Path(get_slpath()) / "Streamlabs OBS.exe"
+                slpath = winreg.QueryValueEx(regpath, r"InstallLocation")[0]
+            return Path(slpath) / "Streamlabs OBS.exe"
         except FileNotFoundError as e:
             self.logger.exception(f"{type(e).__name__}: {e}")
             raise
 
+    def launch(self, delay=5):
         if self.proc is None:
-            self.proc = sp.Popen(self.SL_FULLPATH, shell=False, stdout=DEVNULL)
+            self.proc = sp.Popen(str(self.sl_fullpath), shell=False, stdout=DEVNULL)
             time.sleep(delay)
             self.connect()
 
