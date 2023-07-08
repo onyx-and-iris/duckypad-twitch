@@ -46,6 +46,7 @@ class OBSWS(ILayer):
                     self.on_stream_state_changed,
                     self.on_input_mute_state_changed,
                     self.on_current_program_scene_changed,
+                    self.on_exit_started,
                 ]
             )
         except (ConnectionRefusedError, TimeoutError) as e:
@@ -68,6 +69,9 @@ class OBSWS(ILayer):
         self.logger.info(
             f"stream is {'live' if self._duckypad.stream.is_live else 'offline'}"
         )
+
+    def on_exit_started(self, _):
+        self.event.unsubscribe()
 
     @ensure_obsws
     def call(self, fn_name, *args):
