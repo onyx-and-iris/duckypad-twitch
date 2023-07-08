@@ -38,7 +38,7 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey("ctrl+alt+F17", duckypad.obsws.toggle_mute_mic)
         keyboard.add_hotkey("ctrl+alt+F18", duckypad.obsws.toggle_stream)
 
-    def streamlabs_hotkeys():
+    def streamlabs_controller_hotkeys():
         keyboard.add_hotkey("ctrl+F22", duckypad.streamlabs_controller.begin_stream)
         keyboard.add_hotkey("ctrl+F23", duckypad.streamlabs_controller.end_stream)
         keyboard.add_hotkey(
@@ -54,7 +54,7 @@ def register_hotkeys(duckypad):
         for step in (
             audio_hotkeys,
             scene_hotkeys,
-            streamlabs_hotkeys,
+            streamlabs_controller_hotkeys,
             obsws_hotkeys,
             duckypad_hotkeys,
         )
