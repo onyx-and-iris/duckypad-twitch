@@ -49,16 +49,14 @@ def register_hotkeys(duckypad):
     def duckypad_hotkeys():
         keyboard.add_hotkey("ctrl+F21", duckypad.reset)
 
-    [
-        step()
-        for step in (
-            audio_hotkeys,
-            scene_hotkeys,
-            streamlabs_controller_hotkeys,
-            obsws_hotkeys,
-            duckypad_hotkeys,
-        )
-    ]
+    steps = (
+        audio_hotkeys,
+        scene_hotkeys,
+        streamlabs_controller_hotkeys,
+        obsws_hotkeys,
+        duckypad_hotkeys,
+    )
+    [step() for step in steps]
 
 
 def main():
