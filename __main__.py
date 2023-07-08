@@ -3,7 +3,6 @@ import logging
 import keyboard
 import voicemeeterlib
 import xair_api
-from slobs_websocket import StreamlabsOBS
 
 import duckypad_twitch
 from duckypad_twitch import configuration
@@ -39,7 +38,27 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey("ctrl+alt+F17", duckypad.obsws.toggle_mute_mic)
         keyboard.add_hotkey("ctrl+alt+F18", duckypad.obsws.toggle_stream)
 
-    [step() for step in (audio_hotkeys, scene_hotkeys, obsws_hotkeys)]
+    def streamlabs_hotkeys():
+        keyboard.add_hotkey("ctrl+F22", duckypad.streamlabs_controller.begin_stream)
+        keyboard.add_hotkey("ctrl+F23", duckypad.streamlabs_controller.end_stream)
+        keyboard.add_hotkey(
+            "ctrl+alt+F23", duckypad.streamlabs_controller.launch, args=(8,)
+        )
+        keyboard.add_hotkey("ctrl+alt+F24", duckypad.streamlabs_controller.shutdown)
+
+    def duckypad_hotkeys():
+        keyboard.add_hotkey("ctrl+F21", duckypad.reset)
+
+    [
+        step()
+        for step in (
+            audio_hotkeys,
+            scene_hotkeys,
+            streamlabs_hotkeys,
+            obsws_hotkeys,
+            duckypad_hotkeys,
+        )
+    ]
 
 
 def main():
@@ -47,26 +66,13 @@ def main():
 
     with voicemeeterlib.api("potato") as vm:
         with xair_api.connect("MR18", **xair_config) as mixer:
-            sl = StreamlabsOBS()
+            with duckypad_twitch.connect(vm=vm, mixer=mixer) as duckypad:
+                vm.apply_config("streaming")
 
-            duckypad = duckypad_twitch.connect(vm=vm, mixer=mixer, sl=sl)
+                register_hotkeys(duckypad)
 
-            vm.apply_config("streaming")
-
-            register_hotkeys(duckypad)
-
-            keyboard.add_hotkey("ctrl+F21", duckypad.reset)
-            keyboard.add_hotkey("ctrl+F22", duckypad.streamlabs_controller.begin_stream)
-            keyboard.add_hotkey("ctrl+F23", duckypad.streamlabs_controller.end_stream)
-            keyboard.add_hotkey(
-                "ctrl+alt+F23", duckypad.streamlabs_controller.launch, args=(5,)
-            )
-            keyboard.add_hotkey("ctrl+alt+F24", duckypad.streamlabs_controller.shutdown)
-
-            print("press ctrl+m to quit")
-            keyboard.wait("ctrl+m")
-
-            sl.disconnect()
+                print("press ctrl+m to quit")
+                keyboard.wait("ctrl+m")
 
 
 if __name__ == "__main__":
