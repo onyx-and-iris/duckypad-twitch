@@ -85,7 +85,7 @@ class Audio(ILayer):
         self.vm.button[Buttons.only_stream].stateonly = self.state.only_stream
 
     def sound_test(self):
-        def toggle_soundtest(script):
+        def toggle_soundtest(params):
             onyx_conn = configuration.get("vban_onyx")
             iris_conn = configuration.get("vban_iris")
             assert all(
@@ -93,12 +93,24 @@ class Audio(ILayer):
             ), "expected configurations for onyx_conn, iris_conn"
 
             with vban_cmd.api("potato", **onyx_conn) as vban:
-                vban.sendtext(script)
+                vban.strip[0].apply(params)
             with vban_cmd.api("potato", **iris_conn) as vban:
-                vban.sendtext(script)
+                vban.strip[0].apply(params)
 
-        ENABLE_SOUNDTEST = "Strip(0).A1=1; Strip(0).A2=1; Strip(0).B1=0; Strip(0).B2=0; Strip(0).mono=1;"
-        DISABLE_SOUNDTEST = "Strip(0).A1=0; Strip(0).A2=0; Strip(0).B1=1; Strip(0).B2=1; Strip(0).mono=0;"
+        ENABLE_SOUNDTEST = {
+            "A1": True,
+            "A2": True,
+            "B1": False,
+            "B2": False,
+            "mono": True,
+        }
+        DISABLE_SOUNDTEST = {
+            "A1": False,
+            "A2": False,
+            "B1": True,
+            "B2": True,
+            "mono": False,
+        }
 
         self.state.sound_test = not self.state.sound_test
         if self.state.sound_test:
@@ -124,9 +136,14 @@ class Audio(ILayer):
 
     def toggle_workstation_to_onyx(self):
         self.state.ws_to_onyx = not self.state.ws_to_onyx
+        onyx_conn = configuration.get("vban_onyx")
         if self.state.ws_to_onyx:
+            with vban_cmd.api("potato", **onyx_conn) as vban:
+                vban.vban.instream[0].on = True
             self.vm.strip[5].gain = -6
             self.vm.vban.outstream[2].on = True
         else:
+            with vban_cmd.api("potato", **onyx_conn) as vban:
+                vban.vban.instream[0].on = False
             self.vm.strip[5].gain = 0
             self.vm.vban.outstream[2].on = False
