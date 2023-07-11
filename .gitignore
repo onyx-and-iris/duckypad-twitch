@@ -161,8 +161,8 @@ cython_debug/
 #.idea/
 
 # configs
-configs/*
-!configs/potato
+duckypad.toml
+streaming_extender.toml
 
 # test
 quick.py

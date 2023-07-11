@@ -52,8 +52,8 @@ def register_hotkeys(duckypad):
     steps = (
         audio_hotkeys,
         scene_hotkeys,
-        streamlabs_controller_hotkeys,
         obsws_hotkeys,
+        streamlabs_controller_hotkeys,
         duckypad_hotkeys,
     )
     [step() for step in steps]
@@ -65,7 +65,7 @@ def main():
     with voicemeeterlib.api("potato") as vm:
         with xair_api.connect("MR18", **xair_config) as mixer:
             with duckypad_twitch.connect(vm=vm, mixer=mixer) as duckypad:
-                vm.apply_config("streaming")
+                vm.apply_config("streaming_extender")  # extends the streaming config
 
                 register_hotkeys(duckypad)
 
