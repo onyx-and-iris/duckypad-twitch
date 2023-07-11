@@ -12,9 +12,9 @@ class AudioState:
     mute_mics: bool = True
     only_discord: bool = False
     only_stream: bool = True
-    sound_test: bool = True
-    solo_onyx: bool = True
-    solo_iris: bool = True
+    sound_test: bool = False
+    solo_onyx: bool = False
+    solo_iris: bool = False
 
     ws_to_onyx: bool = False
 
