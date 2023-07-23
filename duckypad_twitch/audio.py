@@ -92,9 +92,9 @@ class Audio(ILayer):
                 [onyx_conn, iris_conn]
             ), "expected configurations for onyx_conn, iris_conn"
 
-            with vban_cmd.api("potato", **onyx_conn) as vban:
+            with vban_cmd.api("potato", outbound=True, **onyx_conn) as vban:
                 vban.strip[0].apply(params)
-            with vban_cmd.api("potato", **iris_conn) as vban:
+            with vban_cmd.api("potato", outbound=True, **iris_conn) as vban:
                 vban.strip[0].apply(params)
 
         ENABLE_SOUNDTEST = {
