@@ -126,3 +126,4 @@ class StreamlabsController:
         if self.proc is not None:
             self.proc.terminate()
             self.proc = None
+            self._duckypad.stream.current_scene = ""
