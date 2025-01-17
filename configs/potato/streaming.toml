@@ -232,6 +232,12 @@ on = false
 on = false
 
 [vban-in-7]
+on = false
+
+[vban-in-8]
+on = false
+
+[vban-in-9]
 on = true
 
 [vban-out-0]
@@ -256,4 +262,7 @@ on = false
 on = false
 
 [vban-out-7]
+on = false
+
+[vban-out-8]
 on = false
