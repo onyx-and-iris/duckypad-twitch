@@ -10,7 +10,7 @@ from .states import AudioState
 logger = logging.getLogger(__name__)
 
 
-Buttons = IntEnum("Buttons", "mute_mics only_discord only_stream", start=0)
+Buttons = IntEnum('Buttons', 'mute_mics only_discord only_stream', start=0)
 
 
 class Audio(ILayer):
@@ -46,12 +46,12 @@ class Audio(ILayer):
             self.vm.strip[0].mute = True
             self.vm.strip[1].mute = True
             self.vm.strip[4].mute = True
-            self.logger.info("Mics Muted")
+            self.logger.info('Mics Muted')
         else:
             self.vm.strip[0].mute = False
             self.vm.strip[1].mute = False
             self.vm.strip[4].mute = False
-            self.logger.info("Mics Unmuted")
+            self.logger.info('Mics Unmuted')
         self.vm.button[Buttons.mute_mics].stateonly = self.state.mute_mics
 
     def only_discord(self):
@@ -59,11 +59,11 @@ class Audio(ILayer):
         if self.state.only_discord:
             self.mixer.dca[0].on = False
             self.vm.strip[4].mute = True
-            self.logger.info("Only Discord Enabled")
+            self.logger.info('Only Discord Enabled')
         else:
             self.vm.strip[4].mute = False
             self.mixer.dca[0].on = True
-            self.logger.info("Only Discord Disabled")
+            self.logger.info('Only Discord Disabled')
         self.vm.button[Buttons.only_discord].stateonly = self.state.only_discord
 
     def only_stream(self):
@@ -74,59 +74,57 @@ class Audio(ILayer):
             self.vm.strip[2].gain = -3
             self.vm.strip[3].gain = -3
             self.vm.strip[6].gain = -3
-            self.logger.info("Only Stream Enabled")
+            self.logger.info('Only Stream Enabled')
         else:
             self.vm.strip[2].gain = 0
             self.vm.strip[3].gain = 0
             self.vm.strip[6].gain = 0
             self.vm.bus[5].mute = False
             self.vm.bus[6].mute = False
-            self.logger.info("Only Stream Disabled")
+            self.logger.info('Only Stream Disabled')
         self.vm.button[Buttons.only_stream].stateonly = self.state.only_stream
 
     def sound_test(self):
         def toggle_soundtest(params):
-            onyx_conn = configuration.get("vban_onyx")
-            iris_conn = configuration.get("vban_iris")
-            assert all(
-                [onyx_conn, iris_conn]
-            ), "expected configurations for onyx_conn, iris_conn"
+            onyx_conn = configuration.get('vban_onyx')
+            iris_conn = configuration.get('vban_iris')
+            assert all([onyx_conn, iris_conn]), 'expected configurations for onyx_conn, iris_conn'
 
-            with vban_cmd.api("potato", outbound=True, **onyx_conn) as vban:
+            with vban_cmd.api('potato', outbound=True, **onyx_conn) as vban:
                 vban.strip[0].apply(params)
-            with vban_cmd.api("potato", outbound=True, **iris_conn) as vban:
+            with vban_cmd.api('potato', outbound=True, **iris_conn) as vban:
                 vban.strip[0].apply(params)
 
         ENABLE_SOUNDTEST = {
-            "A1": True,
-            "A2": True,
-            "B1": False,
-            "B2": False,
-            "mono": True,
+            'A1': True,
+            'A2': True,
+            'B1': False,
+            'B2': False,
+            'mono': True,
         }
         DISABLE_SOUNDTEST = {
-            "A1": False,
-            "A2": False,
-            "B1": True,
-            "B2": True,
-            "mono": False,
+            'A1': False,
+            'A2': False,
+            'B1': True,
+            'B2': True,
+            'mono': False,
         }
 
         self.state.sound_test = not self.state.sound_test
         if self.state.sound_test:
-            self.vm.strip[4].apply({"B3": False, "A1": True, "mute": False})
+            self.vm.strip[4].apply({'B3': False, 'A1': True, 'mute': False})
             self.vm.vban.outstream[0].on = True
             self.vm.vban.outstream[1].on = True
             self.vm.vban.outstream[0].route = 0
             self.vm.vban.outstream[1].route = 0
             toggle_soundtest(ENABLE_SOUNDTEST)
-            self.logger.info("Sound Test Enabled")
+            self.logger.info('Sound Test Enabled')
         else:
             toggle_soundtest(DISABLE_SOUNDTEST)
             self.vm.vban.outstream[0].route = 5
             self.vm.vban.outstream[1].route = 6
-            self.vm.strip[4].apply({"B3": True, "A1": False, "mute": True})
-            self.logger.info("Sound Test Disabled")
+            self.vm.strip[4].apply({'B3': True, 'A1': False, 'mute': True})
+            self.logger.info('Sound Test Disabled')
 
     def solo_onyx(self):
         """placeholder method."""
@@ -136,14 +134,14 @@ class Audio(ILayer):
 
     def toggle_workstation_to_onyx(self):
         self.state.ws_to_onyx = not self.state.ws_to_onyx
-        onyx_conn = configuration.get("vban_onyx")
+        onyx_conn = configuration.get('vban_onyx')
         if self.state.ws_to_onyx:
-            with vban_cmd.api("potato", **onyx_conn) as vban:
+            with vban_cmd.api('potato', **onyx_conn) as vban:
                 vban.vban.instream[0].on = True
             self.vm.strip[5].gain = -6
             self.vm.vban.outstream[2].on = True
         else:
-            with vban_cmd.api("potato", **onyx_conn) as vban:
+            with vban_cmd.api('potato', **onyx_conn) as vban:
                 vban.vban.instream[0].on = False
             self.vm.strip[5].gain = 0
             self.vm.vban.outstream[2].on = False

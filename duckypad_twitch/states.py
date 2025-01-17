@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class StreamState:
     is_live: bool = False
-    current_scene: str = ""
+    current_scene: str = ''
 
 
 @dataclass

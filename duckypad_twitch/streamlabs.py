@@ -31,21 +31,17 @@ class StreamlabsController:
 
     def connect(self):
         try:
-            conn = configuration.get("streamlabs")
-            assert conn is not None, "expected configuration for streamlabs"
+            conn = configuration.get('streamlabs')
+            assert conn is not None, 'expected configuration for streamlabs'
             self.conn.connect(**conn)
         except slobs_websocket.exceptions.ConnectionFailure as e:
-            self.logger.error(f"{type(e).__name__}: {e}")
+            self.logger.error(f'{type(e).__name__}: {e}')
             raise
 
-        self._duckypad.scene.scenes = {
-            scene.name: scene.id for scene in self.conn.ScenesService.getScenes()
-        }
-        self.logger.debug(f"registered scenes: {self._duckypad.scene.scenes}")
+        self._duckypad.scene.scenes = {scene.name: scene.id for scene in self.conn.ScenesService.getScenes()}
+        self.logger.debug(f'registered scenes: {self._duckypad.scene.scenes}')
         self.conn.ScenesService.sceneSwitched += self.on_scene_switched
-        self.conn.StreamingService.streamingStatusChange += (
-            self.on_streaming_status_change
-        )
+        self.conn.StreamingService.streamingStatusChange += self.on_streaming_status_change
 
     def disconnect(self):
         self.conn.disconnect()
@@ -55,17 +51,15 @@ class StreamlabsController:
     ####################################################################################
 
     def on_streaming_status_change(self, data):
-        self.logger.debug(f"streaming status changed, now: {data}")
-        if data in ("live", "starting"):
+        self.logger.debug(f'streaming status changed, now: {data}')
+        if data in ('live', 'starting'):
             self._duckypad.stream.is_live = True
         else:
             self._duckypad.stream.is_live = False
 
     def on_scene_switched(self, data):
         self._duckypad.stream.current_scene = data.name
-        self.logger.debug(
-            f"stream.current_scene updated to {self._duckypad.stream.current_scene}"
-        )
+        self.logger.debug(f'stream.current_scene updated to {self._duckypad.stream.current_scene}')
 
     ####################################################################################
     #   START/STOP the stream
@@ -74,14 +68,14 @@ class StreamlabsController:
     @ensure_sl
     def begin_stream(self):
         if self._duckypad.stream.is_live:
-            self.logger.info("Stream is already online")
+            self.logger.info('Stream is already online')
             return
         self.conn.StreamingService.toggleStreaming()
 
     @ensure_sl
     def end_stream(self):
         if not self._duckypad.stream.is_live:
-            self.logger.info("Stream is already offline")
+            self.logger.info('Stream is already offline')
             return
         self.conn.StreamingService.toggleStreaming()
 
@@ -91,9 +85,7 @@ class StreamlabsController:
 
     @ensure_sl
     def switch_scene(self, name):
-        return self.conn.ScenesService.makeSceneActive(
-            self._duckypad.scene.scenes[name.upper()]
-        )
+        return self.conn.ScenesService.makeSceneActive(self._duckypad.scene.scenes[name.upper()])
 
     ####################################################################################
     #   LAUNCH/SHUTDOWN the streamlabs process
@@ -102,16 +94,14 @@ class StreamlabsController:
     @cached_property
     def sl_fullpath(self) -> Path:
         try:
-            self.logger.debug("fetching sl_fullpath from the registry")
-            SL_KEY = "029c4619-0385-5543-9426-46f9987161d9"
+            self.logger.debug('fetching sl_fullpath from the registry')
+            SL_KEY = '029c4619-0385-5543-9426-46f9987161d9'
 
-            with winreg.OpenKey(
-                winreg.HKEY_LOCAL_MACHINE, r"{}".format("SOFTWARE" + "\\" + SL_KEY)
-            ) as regpath:
-                slpath = winreg.QueryValueEx(regpath, r"InstallLocation")[0]
-            return Path(slpath) / "Streamlabs OBS.exe"
+            with winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r'{}'.format('SOFTWARE' + '\\' + SL_KEY)) as regpath:
+                slpath = winreg.QueryValueEx(regpath, r'InstallLocation')[0]
+            return Path(slpath) / 'Streamlabs OBS.exe'
         except FileNotFoundError as e:
-            self.logger.exception(f"{type(e).__name__}: {e}")
+            self.logger.exception(f'{type(e).__name__}: {e}')
             raise
 
     def launch(self, delay=5):
@@ -126,4 +116,4 @@ class StreamlabsController:
         if self.proc is not None:
             self.proc.terminate()
             self.proc = None
-            self._duckypad.stream.current_scene = ""
+            self._duckypad.stream.current_scene = ''

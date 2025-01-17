@@ -29,15 +29,15 @@ class OBSWS(ILayer):
         self._state = val
 
     def reset_states(self):
-        resp = self.request.get_input_mute("Mic/Aux")
+        resp = self.request.get_input_mute('Mic/Aux')
         self.state.mute_mic = resp.input_muted
         resp = self.request.get_stream_status()
         self._duckypad.stream.is_live = resp.output_active
 
     def obs_connect(self):
         try:
-            conn = configuration.get("obsws")
-            assert conn is not None, "expected configuration for obs"
+            conn = configuration.get('obsws')
+            assert conn is not None, 'expected configuration for obs'
             self.request = obsws.ReqClient(**conn)
             self.reset_states()
             self.event = obsws.EventClient(**conn)
@@ -50,25 +50,28 @@ class OBSWS(ILayer):
                 ]
             )
         except (ConnectionRefusedError, TimeoutError) as e:
-            self.logger.error(f"{type(e).__name__}: {e}")
+            self.logger.error(f'{type(e).__name__}: {e}')
             raise
+
+    def obs_disconnect(self):
+        for client in (self.request, self.event):
+            if client:
+                client.disconnect()
 
     def on_current_program_scene_changed(self, data):
         self._duckypad.stream.current_scene = data.scene_name
-        self.logger.info(f"scene switched to {self._duckypad.stream.current_scene}")
-        if self._duckypad.stream.current_scene in ("START", "BRB", "END"):
+        self.logger.info(f'scene switched to {self._duckypad.stream.current_scene}')
+        if self._duckypad.stream.current_scene in ('START', 'BRB', 'END'):
             self.mute_mic_state(True)
 
     def on_input_mute_state_changed(self, data):
-        if data.input_name == "Mic/Aux":
+        if data.input_name == 'Mic/Aux':
             self.state.mute_mic = data.input_muted
-        self.logger.info(f"mic was {'muted' if self.state.mute_mic else 'unmuted'}")
+        self.logger.info(f'mic was {"muted" if self.state.mute_mic else "unmuted"}')
 
     def on_stream_state_changed(self, data):
         self._duckypad.stream.is_live = data.output_active
-        self.logger.info(
-            f"stream is {'live' if self._duckypad.stream.is_live else 'offline'}"
-        )
+        self.logger.info(f'stream is {"live" if self._duckypad.stream.is_live else "offline"}')
 
     def on_exit_started(self, _):
         self.event.unsubscribe()
@@ -80,22 +83,22 @@ class OBSWS(ILayer):
         return resp
 
     def start(self):
-        self.call("set_current_program_scene", "START")
+        self.call('set_current_program_scene', 'START')
 
     def brb(self):
-        self.call("set_current_program_scene", "BRB")
+        self.call('set_current_program_scene', 'BRB')
 
     def end(self):
-        self.call("set_current_program_scene", "END")
+        self.call('set_current_program_scene', 'END')
 
     def live(self):
-        self.call("set_current_program_scene", "LIVE")
+        self.call('set_current_program_scene', 'LIVE')
 
     def mute_mic_state(self, val):
-        self.call("set_input_mute", "Mic/Aux", val)
+        self.call('set_input_mute', 'Mic/Aux', val)
 
     def toggle_mute_mic(self):
-        self.call("toggle_input_mute", "Mic/Aux")
+        self.call('toggle_input_mute', 'Mic/Aux')
 
     def toggle_stream(self):
-        self.call("toggle_stream")
+        self.call('toggle_stream')

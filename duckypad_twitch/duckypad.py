@@ -28,32 +28,29 @@ class DuckyPad:
 
     def __exit__(self, exc_value, exc_type, traceback):
         self.streamlabs_controller.conn.disconnect()
+        self.obsws.disconnect()
 
     def reset(self):
-        '''
+        """
         apply streaming config,
         then apply current scene settings
         if stream is live enable both mics over vban
-        '''
-        self.vm.apply_config("streaming")
+        """
+        self.vm.apply_config('streaming')
         self.audio.reset_states()
         if self.stream.current_scene:
-            self.logger.debug(
-                f"Running function for current scene {self.stream.current_scene}"
-            )
+            self.logger.debug(f'Running function for current scene {self.stream.current_scene}')
             fn = getattr(
                 self.scene,
-                "_".join([word.lower() for word in self.stream.current_scene.split()]),
+                '_'.join([word.lower() for word in self.stream.current_scene.split()]),
             )
             fn()
         if self.stream.is_live:
-            self.logger.debug("stream is live, enabling both mics over vban")
+            self.logger.debug('stream is live, enabling both mics over vban')
             self.vm.vban.outstream[0].on = True
             self.vm.vban.outstream[1].on = True
         else:
-            self.logger.debug(
-                "stream is not live. Leaving both vban outstreams disabled"
-            )
+            self.logger.debug('stream is not live. Leaving both vban outstreams disabled')
 
 
 def connect(*args, **kwargs):

@@ -7,11 +7,11 @@ except ModuleNotFoundError:
 
 configuration = {}
 
-configpath = Path.cwd() / "configs" / "duckypad.toml"
+configpath = Path.cwd() / 'configs' / 'duckypad.toml'
 if not configpath.exists():
-    raise OSError(f"unable to locate {configpath}")
+    raise OSError(f'unable to locate {configpath}')
 
-with open(configpath, "rb") as f:
+with open(configpath, 'rb') as f:
     configuration = tomllib.load(f)
 
 

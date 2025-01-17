@@ -1,7 +1,7 @@
 # duckypad twitch
 
-[![PyPI - Version](https://img.shields.io/pypi/v/duckypad-twitch.svg)](https://pypi.org/project/duckypad-twitch)
-[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/duckypad-twitch.svg)](https://pypi.org/project/duckypad-twitch)
+[![Hatch project](https://img.shields.io/badge/%F0%9F%A5%9A-Hatch-4051b5.svg)](https://github.com/pypa/hatch)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
 
 ---
 
