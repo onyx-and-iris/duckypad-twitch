@@ -32,7 +32,7 @@ dependencies = [
   "xair-api>=2.4.1",
   "slobs_websocket@git+https://git@github.com/onyx-and-iris/slobs_websocket@v0.1.4#egg=slobs_websocket",
   "obsws-python>=1.7.0",
-  "vban-cmd>=2.5.0",
+  "vban-cmd>=2.5.1",
 ]
 
 [project.urls]

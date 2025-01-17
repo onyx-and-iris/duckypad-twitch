@@ -53,7 +53,7 @@ class OBSWS(ILayer):
             self.logger.error(f'{type(e).__name__}: {e}')
             raise
 
-    def obs_disconnect(self):
+    def disconnect(self):
         for client in (self.request, self.event):
             if client:
                 client.disconnect()
