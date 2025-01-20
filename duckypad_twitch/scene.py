@@ -32,49 +32,49 @@ class Scene(ILayer):
         self._state = SceneState()
 
     def onyx_only(self):
-        if self._duckypad.streamlabs_controller.switch_scene('onyx_only'):
+        if self._duckypad.streamlabs.switch_scene('onyx_only'):
             self.vm.strip[2].mute = False
             self.vm.strip[3].mute = True
             self.logger.info('Only Onyx Scene enabled, Iris game pc muted')
 
     def iris_only(self):
-        if self._duckypad.streamlabs_controller.switch_scene('iris_only'):
+        if self._duckypad.streamlabs.switch_scene('iris_only'):
             self.vm.strip[2].mute = True
             self.vm.strip[3].mute = False
             self.logger.info('Only Iris Scene enabled, Onyx game pc muted')
 
     def dual_scene(self):
-        if self._duckypad.streamlabs_controller.switch_scene('dual_scene'):
+        if self._duckypad.streamlabs.switch_scene('dual_scene'):
             self.vm.strip[2].apply({'mute': False, 'gain': 0})
             self.vm.strip[3].apply({'A5': True, 'mute': False, 'gain': 0})
             self.logger.info('Dual Scene enabled')
 
     def onyx_big(self):
-        if self._duckypad.streamlabs_controller.switch_scene('onyx_big'):
+        if self._duckypad.streamlabs.switch_scene('onyx_big'):
             self.vm.strip[2].apply({'mute': False, 'gain': 0})
             self.vm.strip[3].apply({'mute': False, 'gain': -3})
             self.logger.info('Onyx Big scene enabled')
 
     def iris_big(self):
-        if self._duckypad.streamlabs_controller.switch_scene('iris_big'):
+        if self._duckypad.streamlabs.switch_scene('iris_big'):
             self.vm.strip[2].apply({'mute': False, 'gain': -3})
             self.vm.strip[3].apply({'mute': False, 'gain': 0})
             self.logger.info('Iris Big enabled')
 
     def start(self):
-        if self._duckypad.streamlabs_controller.switch_scene('start'):
+        if self._duckypad.streamlabs.switch_scene('start'):
             self.vm.strip[2].mute = True
             self.vm.strip[3].mute = True
             self.logger.info('Start scene enabled.. ready to go live!')
 
     def brb(self):
-        if self._duckypad.streamlabs_controller.switch_scene('brb'):
+        if self._duckypad.streamlabs.switch_scene('brb'):
             self.vm.strip[2].mute = True
             self.vm.strip[3].mute = True
             self.logger.info('BRB: game pcs muted')
 
     def end(self):
-        if self._duckypad.streamlabs_controller.switch_scene('end'):
+        if self._duckypad.streamlabs.switch_scene('end'):
             self.vm.strip[2].mute = True
             self.vm.strip[3].mute = True
             self.logger.info('End scene enabled.')

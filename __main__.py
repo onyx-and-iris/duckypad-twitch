@@ -39,10 +39,10 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey('ctrl+alt+F18', duckypad.obsws.toggle_stream)
 
     def streamlabs_controller_hotkeys():
-        keyboard.add_hotkey('ctrl+F22', duckypad.streamlabs_controller.begin_stream)
-        keyboard.add_hotkey('ctrl+F23', duckypad.streamlabs_controller.end_stream)
-        keyboard.add_hotkey('ctrl+alt+F23', duckypad.streamlabs_controller.launch, args=(10,))
-        keyboard.add_hotkey('ctrl+alt+F24', duckypad.streamlabs_controller.shutdown)
+        keyboard.add_hotkey('ctrl+F22', duckypad.streamlabs.begin_stream)
+        keyboard.add_hotkey('ctrl+F23', duckypad.streamlabs.end_stream)
+        keyboard.add_hotkey('ctrl+alt+F23', duckypad.streamlabs.launch, args=(10,))
+        keyboard.add_hotkey('ctrl+alt+F24', duckypad.streamlabs.shutdown)
 
     def duckypad_hotkeys():
         keyboard.add_hotkey('ctrl+F21', duckypad.reset)

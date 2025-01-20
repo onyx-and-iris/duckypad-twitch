@@ -21,13 +21,13 @@ class DuckyPad:
         self.audio = Audio(self, vm=self.vm, mixer=self.mixer)
         self.scene = Scene(self, vm=self.vm)
         self.obsws = OBSWS(self)
-        self.streamlabs_controller = StreamlabsController(self)
+        self.streamlabs = StreamlabsController(self)
 
     def __enter__(self):
         return self
 
     def __exit__(self, exc_value, exc_type, traceback):
-        self.streamlabs_controller.conn.disconnect()
+        self.streamlabs.disconnect()
         self.obsws.disconnect()
 
     def reset(self):
