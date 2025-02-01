@@ -57,7 +57,7 @@ def register_hotkeys(duckypad):
         step()
 
 
-def main():
+def run():
     xair_config = configuration.get('xair')
 
     with voicemeeterlib.api('potato') as vm:
@@ -69,7 +69,3 @@ def main():
 
                 print('press ctrl+m to quit')
                 keyboard.wait('ctrl+m')
-
-
-if __name__ == '__main__':
-    main()

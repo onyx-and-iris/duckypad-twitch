@@ -35,6 +35,9 @@ dependencies = [
   "vban-cmd>=2.5.2",
 ]
 
+[project.scripts]
+duckypad-cli = "duckypad_twitch.cli:run"
+
 [project.urls]
 Documentation = "https://github.com/unknown/duckypad-twitch#readme"
 Issues = "https://github.com/unknown/duckypad-twitch/issues"
