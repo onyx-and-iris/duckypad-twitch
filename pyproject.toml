@@ -36,7 +36,7 @@ dependencies = [
 ]
 
 [project.scripts]
-duckypad-cli = "duckypad_twitch.cli:run"
+duckypad-macros = "duckypad_twitch.macros:run"
 
 [project.urls]
 Documentation = "https://github.com/unknown/duckypad-twitch#readme"

@@ -136,12 +136,12 @@ class Audio(ILayer):
         self.state.ws_to_onyx = not self.state.ws_to_onyx
         onyx_conn = configuration.get('vban_onyx')
         if self.state.ws_to_onyx:
-            with vban_cmd.api('potato', **onyx_conn) as vban:
+            with vban_cmd.api('potato', outbound=True, **onyx_conn) as vban:
                 vban.vban.instream[0].on = True
             self.vm.strip[5].gain = -6
             self.vm.vban.outstream[2].on = True
         else:
-            with vban_cmd.api('potato', **onyx_conn) as vban:
+            with vban_cmd.api('potato', outbound=True, **onyx_conn) as vban:
                 vban.vban.instream[0].on = False
             self.vm.strip[5].gain = 0
             self.vm.vban.outstream[2].on = False
