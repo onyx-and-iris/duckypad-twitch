@@ -1,6 +1,7 @@
 import logging
 from enum import IntEnum
 
+import time
 import vban_cmd
 
 from . import configuration
@@ -140,8 +141,22 @@ class Audio(ILayer):
                 vban.vban.instream[0].on = True
             self.vm.strip[5].gain = -6
             self.vm.vban.outstream[2].on = True
+
+            # Fade out the workstation
+            current_fader = self.mixer.lr.mix.fader
+            while current_fader > -90:
+                current_fader -= 1
+                self.mixer.lr.mix.fader = current_fader
+                time.sleep(0.05)
         else:
             with vban_cmd.api('potato', outbound=True, **onyx_conn) as vban:
                 vban.vban.instream[0].on = False
             self.vm.strip[5].gain = 0
             self.vm.vban.outstream[2].on = False
+
+            # Fade in the workstation
+            current_fader = self.mixer.lr.mix.fader
+            while current_fader < -36:
+                current_fader += 1
+                self.mixer.lr.mix.fader = current_fader
+                time.sleep(0.05)
