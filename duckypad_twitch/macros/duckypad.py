@@ -60,12 +60,14 @@ def register_hotkeys(duckypad):
 def run():
     xair_config = configuration.get('xair')
 
-    with voicemeeterlib.api('potato') as vm:
-        with xair_api.connect('MR18', **xair_config) as mixer:
-            with duckypad_twitch.connect(vm=vm, mixer=mixer) as duckypad:
-                vm.apply_config('streaming_extender')  # extends the streaming config
+    with (
+        voicemeeterlib.api('potato') as vm,
+        xair_api.connect('MR18', **xair_config) as mixer,
+        duckypad_twitch.connect(vm=vm, mixer=mixer) as duckypad,
+    ):
+        vm.apply_config('streaming_extender')  # extends the streaming config
 
-                register_hotkeys(duckypad)
+        register_hotkeys(duckypad)
 
-                print('press ctrl+m to quit')
-                keyboard.wait('ctrl+m')
+        print('press ctrl+m to quit')
+        keyboard.wait('ctrl+m')
