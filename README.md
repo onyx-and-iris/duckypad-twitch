@@ -22,13 +22,12 @@ Packages used in this codebase:
 - [`vban-cmd`][vban-cmd]
 - [`xair-api`][xair-api]
 - [`obsws-python`][obsws-python]
-- [`slobs-websocket`][slobs-websocket]
 
 ## Need for a custom driver
 
-We use a triple pc streaming setup, one gaming pc for each of us and a third pc that handles the stream. 
+We use a triple pc streaming setup, one gaming pc for each of us and a third pc that handles the stream.
 
-- Both of our microphones, as well as both gaming pc are wired into an [MR18 mixer][mr18] which itself is connected to the streaming pc. 
+- Both of our microphones, as well as both gaming pc are wired into an [MR18 mixer][mr18] which itself is connected to the streaming pc.
 - Then we vban our microphones from the workstation off to each of our pcs in order to talk in-game. All audio is routed through [Voicemeeter][voicemeeter].
 - Voicemeeter is connected to Studio ONE daw for background noise removal. Any voice communication software (such as Discord) is therefore installed onto the workstation, separate of our gaming pcs.
 
@@ -43,7 +42,7 @@ This package is for demonstration purposes only. Several of the interfaces on wh
 - Most of the audio routing for the dual stream is handled in the `Audio class` in audio.py with the aid of Voicemeeter's Remote API.
   - Some communication with the Xair mixer and the vban protocol can also be found in this class.
 - Scene switching and some audio routing are handled in the `Scene class` in scene.py.
-  - A `StreamlabsController` class is used to communicate with the Streamlabs API.
+  - A `OBSWS` class is used to communicate with OBS websocket.
 - Dataclasses are used to hold internal states and states are updated using event callbacks.
 - Decorators are used to confirm websocket connections.
 - A separate OBSWS class is used to handle scenes and mic muting (for a single pc stream).
@@ -59,6 +58,5 @@ This package is for demonstration purposes only. Several of the interfaces on wh
 [vban-cmd]: https://github.com/onyx-and-iris/vban-cmd-python
 [xair-api]: https://github.com/onyx-and-iris/xair-api-python
 [obsws-python]: https://github.com/aatikturk/obsws-python
-[slobs-websocket]: https://github.com/onyx-and-iris/slobs_websocket
 [voicemeeter]: https://voicemeeter.com/
 [mr18]: https://www.midasconsoles.com/product.html?modelCode=P0C8H
