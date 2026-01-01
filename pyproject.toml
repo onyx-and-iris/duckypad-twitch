@@ -24,11 +24,8 @@ dynamic = ["version"]
 dependencies = [
   "keyboard",
   "obsws-python>=1.7",
-  "slobs-websocket @ git+https://git@github.com/onyx-and-iris/slobs_websocket@v0.1.4#egg=slobs_websocket",
-  "tomli>=2.0.1; python_version<'3.11'",
   "vban-cmd>=2.5.2",
   "voicemeeter-api>=2.6.1",
-  "websocket-client",
   "xair-api>=2.4.1",
 ]
 
