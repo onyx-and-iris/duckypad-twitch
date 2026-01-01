@@ -17,6 +17,9 @@ class AudioState:
     solo_iris: bool = False
 
     ws_to_onyx: bool = False
+    ws_to_iris: bool = False
+    tv_to_onyx: bool = False
+    tv_to_iris: bool = False
 
 
 @dataclass
@@ -29,8 +32,3 @@ class SceneState:
     start: bool = False
     brb: bool = False
     end: bool = False
-
-
-@dataclass
-class OBSWSState:
-    mute_mic: bool = True

@@ -1,5 +1,6 @@
 import logging
 
+from .enums import Strips
 from .layer import ILayer
 from .states import SceneState
 
@@ -31,50 +32,37 @@ class Scene(ILayer):
     def reset_states(self):
         self._state = SceneState()
 
-    def onyx_only(self):
-        if self._duckypad.streamlabs.switch_scene('onyx_only'):
-            self.vm.strip[2].mute = False
-            self.vm.strip[3].mute = True
-            self.logger.info('Only Onyx Scene enabled, Iris game pc muted')
-
-    def iris_only(self):
-        if self._duckypad.streamlabs.switch_scene('iris_only'):
-            self.vm.strip[2].mute = True
-            self.vm.strip[3].mute = False
-            self.logger.info('Only Iris Scene enabled, Onyx game pc muted')
-
-    def dual_scene(self):
-        if self._duckypad.streamlabs.switch_scene('dual_scene'):
-            self.vm.strip[2].apply({'mute': False, 'gain': 0})
-            self.vm.strip[3].apply({'A5': True, 'mute': False, 'gain': 0})
-            self.logger.info('Dual Scene enabled')
-
-    def onyx_big(self):
-        if self._duckypad.streamlabs.switch_scene('onyx_big'):
-            self.vm.strip[2].apply({'mute': False, 'gain': 0})
-            self.vm.strip[3].apply({'mute': False, 'gain': -3})
-            self.logger.info('Onyx Big scene enabled')
-
-    def iris_big(self):
-        if self._duckypad.streamlabs.switch_scene('iris_big'):
-            self.vm.strip[2].apply({'mute': False, 'gain': -3})
-            self.vm.strip[3].apply({'mute': False, 'gain': 0})
-            self.logger.info('Iris Big enabled')
-
     def start(self):
-        if self._duckypad.streamlabs.switch_scene('start'):
-            self.vm.strip[2].mute = True
-            self.vm.strip[3].mute = True
-            self.logger.info('Start scene enabled.. ready to go live!')
+        self.vm.strip[Strips.onyx_pc].mute = True
+        self.vm.strip[Strips.iris_pc].mute = True
+        self.obsws.switch_to_scene('START')
+
+    def dual_stream(self):
+        ENABLE_PC = {
+            'mute': False,
+            'A5': True,
+            'gain': 0,
+        }
+        self.vm.strip[Strips.onyx_pc].apply(ENABLE_PC)
+        self.vm.strip[Strips.iris_pc].apply(ENABLE_PC)
+        self.obsws.switch_to_scene('DUAL STREAM')
 
     def brb(self):
-        if self._duckypad.streamlabs.switch_scene('brb'):
-            self.vm.strip[2].mute = True
-            self.vm.strip[3].mute = True
-            self.logger.info('BRB: game pcs muted')
+        self.vm.strip[Strips.onyx_pc].mute = True
+        self.vm.strip[Strips.iris_pc].mute = True
+        self.obsws.switch_to_scene('BRB')
 
     def end(self):
-        if self._duckypad.streamlabs.switch_scene('end'):
-            self.vm.strip[2].mute = True
-            self.vm.strip[3].mute = True
-            self.logger.info('End scene enabled.')
+        self.vm.strip[Strips.onyx_pc].mute = True
+        self.vm.strip[Strips.iris_pc].mute = True
+        self.obsws.switch_to_scene('END')
+
+    def onyx_solo(self):
+        self.vm.strip[Strips.onyx_pc].mute = False
+        self.vm.strip[Strips.iris_pc].mute = True
+        self.obsws.switch_to_scene('ONYX SOLO')
+
+    def iris_solo(self):
+        self.vm.strip[Strips.onyx_pc].mute = True
+        self.vm.strip[Strips.iris_pc].mute = False
+        self.obsws.switch_to_scene('IRIS SOLO')

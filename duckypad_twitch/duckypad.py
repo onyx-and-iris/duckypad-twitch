@@ -4,7 +4,7 @@ from .audio import Audio
 from .obsws import OBSWS
 from .scene import Scene
 from .states import StreamState
-from .streamlabs import StreamlabsController
+from .util import to_snakecase
 
 logger = logging.getLogger(__name__)
 
@@ -18,16 +18,14 @@ class DuckyPad:
             setattr(self, attr, val)
 
         self.stream = StreamState()
-        self.audio = Audio(self, vm=self.vm, mixer=self.mixer)
-        self.scene = Scene(self, vm=self.vm)
         self.obsws = OBSWS(self)
-        self.streamlabs = StreamlabsController(self)
+        self.audio = Audio(self, vm=self.vm, mixer=self.mixer)
+        self.scene = Scene(self, vm=self.vm, obsws=self.obsws)
 
     def __enter__(self):
         return self
 
-    def __exit__(self, exc_value, exc_type, traceback):
-        self.streamlabs.disconnect()
+    def __exit__(self, exc_value, exc_type, exc_tb):
         self.obsws.disconnect()
 
     def reset(self):
@@ -40,11 +38,14 @@ class DuckyPad:
         self.audio.reset_states()
         if self.stream.current_scene:
             self.logger.debug(f'Running function for current scene {self.stream.current_scene}')
-            fn = getattr(
-                self.scene,
-                '_'.join([word.lower() for word in self.stream.current_scene.split()]),
-            )
-            fn()
+            try:
+                fn = getattr(
+                    self.scene,
+                    to_snakecase(self.stream.current_scene),
+                )
+                fn()
+            except AttributeError:
+                self.logger.warning(f'No function found for scene {self.stream.current_scene}')
         if self.stream.is_live:
             self.logger.debug('stream is live, enabling both mics over vban')
             self.vm.vban.outstream[0].on = True
