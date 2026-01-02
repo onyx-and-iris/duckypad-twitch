@@ -15,6 +15,7 @@ class AudioState:
     sound_test: bool = False
     patch_onyx: bool = True
     patch_iris: bool = True
+    mute_game_pcs: bool = False
 
     ws_to_onyx: bool = False
     ws_to_iris: bool = False

@@ -179,6 +179,15 @@ class Audio(ILayer):
             self.vm.patch.asio[2].set(0)
             self.logger.info('Iris mic has been unpatched')
 
+    def mute_game_pcs(self):
+        self.state.mute_game_pcs = not self.state.mute_game_pcs
+        if self.state.mute_game_pcs:
+            self.mixer.strip[XAirStrips.game_pcs].send[XAirBuses.stream_mix].level = -90
+            self.logger.info('Game PCs Muted')
+        else:
+            self.mixer.strip[XAirStrips.game_pcs].send[XAirBuses.stream_mix].level = -24
+            self.logger.info('Game PCs Unmuted')
+
     ### Workstation and TV Audio Routing via VBAN ###
 
     def _fade_mixer(self, target_fader, fade_in=True):

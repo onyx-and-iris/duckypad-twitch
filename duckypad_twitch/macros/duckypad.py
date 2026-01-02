@@ -24,10 +24,11 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey('shift+F18', duckypad.audio.unstage_iris_mic)
         keyboard.add_hotkey('F19', duckypad.audio.patch_onyx)
         keyboard.add_hotkey('F20', duckypad.audio.patch_iris)
-        keyboard.add_hotkey('F21', duckypad.audio.toggle_workstation_to_onyx)
-        keyboard.add_hotkey('F22', duckypad.audio.toggle_workstation_to_iris)
-        keyboard.add_hotkey('F23', duckypad.audio.toggle_tv_audio_to_onyx)
-        keyboard.add_hotkey('F24', duckypad.audio.toggle_tv_audio_to_iris)
+        keyboard.add_hotkey('F21', duckypad.audio.mute_game_pcs)
+        keyboard.add_hotkey('alt+F13', duckypad.audio.toggle_workstation_to_onyx)
+        keyboard.add_hotkey('alt+F14', duckypad.audio.toggle_workstation_to_iris)
+        keyboard.add_hotkey('alt+F15', duckypad.audio.toggle_tv_audio_to_onyx)
+        keyboard.add_hotkey('alt+F16', duckypad.audio.toggle_tv_audio_to_iris)
 
     def scene_hotkeys():
         keyboard.add_hotkey('ctrl+F13', duckypad.scene.start)
