@@ -237,7 +237,7 @@ class Audio(ILayer):
                 vban_tv.strip[3].A1 = False
                 vban_tv.strip[3].gain = -6
                 vban_tv.vban.outstream[0].on = True
-                vban_target.vban.instream[2].on = True
+                vban_target.vban.instream[3].on = True
             self.logger.info(f'TV audio routed to {target_name}')
         else:
             with (
@@ -247,7 +247,7 @@ class Audio(ILayer):
                 vban_tv.strip[3].A1 = True
                 vban_tv.strip[3].gain = 0
                 vban_tv.vban.outstream[0].on = False
-                vban_target.vban.instream[2].on = False
+                vban_target.vban.instream[3].on = False
             self.logger.info(f'TV audio routing to {target_name} disabled')
 
     def toggle_tv_audio_to_onyx(self):
