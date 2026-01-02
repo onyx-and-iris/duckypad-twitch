@@ -194,7 +194,7 @@ gain = 0.0
 mode = "normal"
 
 [bus-7]
-label = "Both Mics"
+label = "Stream Mics"
 mono = false
 eq.on = false
 mute = false
