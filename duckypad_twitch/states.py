@@ -13,8 +13,8 @@ class AudioState:
     only_discord: bool = False
     only_stream: bool = True
     sound_test: bool = False
-    solo_onyx: bool = False
-    solo_iris: bool = False
+    patch_onyx: bool = True
+    patch_iris: bool = True
 
     ws_to_onyx: bool = False
     ws_to_iris: bool = False

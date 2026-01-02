@@ -161,11 +161,23 @@ class Audio(ILayer):
         self.mixer.headamp[XAirStrips.iris_mic].phantom = False
         self.logger.info('Iris Mic Unstaged and Phantom Power Disabled')
 
-    def solo_onyx(self):
-        """placeholder method"""
+    def patch_onyx(self):
+        self.state.patch_onyx = not self.state.patch_onyx
+        if self.state.patch_onyx:
+            self.vm.patch.asio[0].set(11)
+            self.logger.info('Onyx mic has been patched')
+        else:
+            self.vm.patch.asio[0].set(0)
+            self.logger.info('Onyx mic has been unpatched')
 
-    def solo_iris(self):
-        """placeholder method"""
+    def patch_iris(self):
+        self.state.patch_iris = not self.state.patch_iris
+        if self.state.patch_iris:
+            self.vm.patch.asio[2].set(12)
+            self.logger.info('Iris mic has been patched')
+        else:
+            self.vm.patch.asio[2].set(0)
+            self.logger.info('Iris mic has been unpatched')
 
     ### Workstation and TV Audio Routing via VBAN ###
 
