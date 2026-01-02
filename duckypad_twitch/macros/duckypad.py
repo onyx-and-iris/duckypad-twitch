@@ -40,7 +40,7 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey('ctrl+alt+F14', duckypad.obsws.stop_stream)
 
     def duckypad_hotkeys():
-        keyboard.add_hotkey('ctrl+F21', duckypad.reset)
+        keyboard.add_hotkey('ctrl+F24', duckypad.reset)
 
     for step in (
         audio_hotkeys,
