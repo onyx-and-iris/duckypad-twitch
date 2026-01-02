@@ -17,7 +17,7 @@ class XAirStrips(IntEnum):
     pretzel = 4
     game_pcs = 6
     onyx_mic = 10
-    iris_mic = 12
+    iris_mic = 11
 
 
 class XAirBuses(IntEnum):
