@@ -1,12 +1,12 @@
 import logging
-
 import time
+
 import vban_cmd
 
 from . import configuration
+from .enums import Buttons, Strips
 from .layer import ILayer
 from .states import AudioState
-from .enums import Buttons, Strips
 from .util import ensure_mixer_fadeout
 
 logger = logging.getLogger(__name__)
@@ -189,16 +189,16 @@ class Audio(ILayer):
 
         if new_state:
             with vban_cmd.api('potato', outbound=True, **target_conn) as vban:
-                vban.vban.instream[1].on = True
+                vban.vban.instream[2].on = True
             self.vm.strip[5].gain = -6
-            self.vm.vban.outstream[2].on = True
+            self.vm.vban.outstream[3].on = True
             self._fade_mixer(-90, fade_in=False)
             self.logger.info(f'Workstation audio routed to {target_name}')
         else:
             with vban_cmd.api('potato', outbound=True, **target_conn) as vban:
-                vban.vban.instream[0].on = False
+                vban.vban.instream[2].on = False
             self.vm.strip[5].gain = 0
-            self.vm.vban.outstream[2].on = False
+            self.vm.vban.outstream[3].on = False
             self._fade_mixer(-36, fade_in=True)
             self.logger.info('Workstation audio routed back to monitor speakers')
 
