@@ -9,6 +9,8 @@ from duckypad_twitch import configuration
 
 logging.basicConfig(level=logging.INFO)
 
+logger = logging.getLogger(__name__)
+
 
 def register_hotkeys(duckypad):
     def audio_hotkeys():
@@ -62,6 +64,22 @@ def run():
         vm.apply_config('streaming_extender')  # extends the streaming config
 
         register_hotkeys(duckypad)
+
+        banner_width = 80
+        logger.info(
+            '\n'.join(
+                (
+                    '\n' + '#' * banner_width,
+                    'Duckypad Twitch is running. ',
+                    'Run sound test and gain stage mics to verify audio setup.',
+                    'Then start the stream.',
+                    "Don't forget Voicemeeter starts in Only Stream mode!",
+                    'So first unmute mics, then give stream introduction, then disable Only Stream mode.',
+                    'Now you are live with mics unmuted!',
+                    '#' * banner_width,
+                )
+            )
+        )
 
         print('press ctrl+shift+F24 to quit')
         keyboard.wait('ctrl+shift+F24')
