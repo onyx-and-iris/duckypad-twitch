@@ -15,6 +15,9 @@ logger = logging.getLogger(__name__)
 class Audio(ILayer):
     """Audio concrete class"""
 
+    DCM8_MAX_GAIN = 20  # SE Electronics DCM8 max gain
+    TLM102_MAX_GAIN = 30  # Neumann TLM102 max gain
+
     def __init__(self, duckypad, **kwargs):
         super().__init__(duckypad)
         for attr, val in kwargs.items():
@@ -131,7 +134,7 @@ class Audio(ILayer):
     def stage_onyx_mic(self):
         """Gain stage SE Electronics DCM8 with phantom power"""
         self.mixer.headamp[XAirStrips.onyx_mic].phantom = True
-        for i in range(21):
+        for i in range(Audio.DCM8_MAX_GAIN + 1):
             self.mixer.headamp[XAirStrips.onyx_mic].gain = i
             time.sleep(0.1)
         self.logger.info('Onyx Mic Staged with Phantom Power')
@@ -140,14 +143,14 @@ class Audio(ILayer):
     def stage_iris_mic(self):
         """Gain stage TLM102 with phantom power"""
         self.mixer.headamp[XAirStrips.iris_mic].phantom = True
-        for i in range(31):
+        for i in range(Audio.TLM102_MAX_GAIN + 1):
             self.mixer.headamp[XAirStrips.iris_mic].gain = i
             time.sleep(0.1)
         self.logger.info('Iris Mic Staged with Phantom Power')
 
     def unstage_onyx_mic(self):
         """Unstage SE Electronics DCM8 and disable phantom power"""
-        for i in reversed(range(21)):
+        for i in reversed(range(Audio.DCM8_MAX_GAIN + 1)):
             self.mixer.headamp[XAirStrips.onyx_mic].gain = i
             time.sleep(0.1)
         self.mixer.headamp[XAirStrips.onyx_mic].phantom = False
@@ -155,7 +158,7 @@ class Audio(ILayer):
 
     def unstage_iris_mic(self):
         """Unstage TLM102 and disable phantom power"""
-        for i in reversed(range(31)):
+        for i in reversed(range(Audio.TLM102_MAX_GAIN + 1)):
             self.mixer.headamp[XAirStrips.iris_mic].gain = i
             time.sleep(0.1)
         self.mixer.headamp[XAirStrips.iris_mic].phantom = False
