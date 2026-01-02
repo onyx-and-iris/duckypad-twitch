@@ -54,12 +54,12 @@ class OBSWS(ILayer):
         for client in (self.request, self.event):
             if client:
                 client.disconnect()
+        self.request = self.event = None
 
     ### Event Handlers ###
 
     def on_stream_state_changed(self, data):
         self._duckypad.stream.is_live = data.output_active
-        self.logger.info(f'stream is {"live" if self._duckypad.stream.is_live else "offline"}')
 
     def on_current_program_scene_changed(self, data):
         self._duckypad.stream.current_scene = data.scene_name
@@ -77,8 +77,10 @@ class OBSWS(ILayer):
             case 'IRIS SOLO':
                 self.logger.info('Iris Solo Scene enabled, Onyx game pc muted')
 
-    def on_exit_started(self, _):
-        self.event.unsubscribe()
+    def on_exit_started(self, data):
+        self.logger.info('OBS is exiting, disconnecting...')
+        self.request.disconnect()
+        self.request = self.event = None
 
     ### OBSWS Request Wrappers ###
 
@@ -98,6 +100,7 @@ class OBSWS(ILayer):
             return
 
         self._call('start_stream')
+        self.logger.info('stream started')
 
     def stop_stream(self):
         resp = self._call('get_stream_status')
@@ -106,3 +109,4 @@ class OBSWS(ILayer):
             return
 
         self._call('stop_stream')
+        self.logger.info('stream stopped')

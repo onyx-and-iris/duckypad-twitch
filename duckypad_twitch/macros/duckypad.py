@@ -39,8 +39,8 @@ def register_hotkeys(duckypad):
         keyboard.add_hotkey('ctrl+F18', duckypad.scene.iris_solo)
 
     def obsws_hotkeys():
-        keyboard.add_hotkey('ctrl+alt+F13', duckypad.obsws.start_stream)
-        keyboard.add_hotkey('ctrl+alt+F14', duckypad.obsws.stop_stream)
+        keyboard.add_hotkey('ctrl+F22', duckypad.obsws.start_stream)
+        keyboard.add_hotkey('ctrl+F23', duckypad.obsws.stop_stream)
 
     def duckypad_hotkeys():
         keyboard.add_hotkey('ctrl+F24', duckypad.reset)
