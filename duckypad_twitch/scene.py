@@ -1,6 +1,6 @@
 import logging
 
-from .enums import Strips
+from .enums import VMStrips
 from .layer import ILayer
 from .states import SceneState
 
@@ -33,8 +33,8 @@ class Scene(ILayer):
         self._state = SceneState()
 
     def start(self):
-        self.vm.strip[Strips.onyx_pc].mute = True
-        self.vm.strip[Strips.iris_pc].mute = True
+        self.vm.strip[VMStrips.onyx_pc].mute = True
+        self.vm.strip[VMStrips.iris_pc].mute = True
         self.obsws.switch_to_scene('START')
 
     def dual_stream(self):
@@ -43,26 +43,26 @@ class Scene(ILayer):
             'A5': True,
             'gain': 0,
         }
-        self.vm.strip[Strips.onyx_pc].apply(ENABLE_PC)
-        self.vm.strip[Strips.iris_pc].apply(ENABLE_PC)
+        self.vm.strip[VMStrips.onyx_pc].apply(ENABLE_PC)
+        self.vm.strip[VMStrips.iris_pc].apply(ENABLE_PC)
         self.obsws.switch_to_scene('DUAL STREAM')
 
     def brb(self):
-        self.vm.strip[Strips.onyx_pc].mute = True
-        self.vm.strip[Strips.iris_pc].mute = True
+        self.vm.strip[VMStrips.onyx_pc].mute = True
+        self.vm.strip[VMStrips.iris_pc].mute = True
         self.obsws.switch_to_scene('BRB')
 
     def end(self):
-        self.vm.strip[Strips.onyx_pc].mute = True
-        self.vm.strip[Strips.iris_pc].mute = True
+        self.vm.strip[VMStrips.onyx_pc].mute = True
+        self.vm.strip[VMStrips.iris_pc].mute = True
         self.obsws.switch_to_scene('END')
 
     def onyx_solo(self):
-        self.vm.strip[Strips.onyx_pc].mute = False
-        self.vm.strip[Strips.iris_pc].mute = True
+        self.vm.strip[VMStrips.onyx_pc].mute = False
+        self.vm.strip[VMStrips.iris_pc].mute = True
         self.obsws.switch_to_scene('ONYX SOLO')
 
     def iris_solo(self):
-        self.vm.strip[Strips.onyx_pc].mute = True
-        self.vm.strip[Strips.iris_pc].mute = False
+        self.vm.strip[VMStrips.onyx_pc].mute = True
+        self.vm.strip[VMStrips.iris_pc].mute = False
         self.obsws.switch_to_scene('IRIS SOLO')
