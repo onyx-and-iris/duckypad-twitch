@@ -1,1 +1,1 @@
-from .duckypad import run
+from .main import run
