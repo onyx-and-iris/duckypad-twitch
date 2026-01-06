@@ -22,6 +22,7 @@ class Audio(ILayer):
         super().__init__(duckypad)
         for attr, val in kwargs.items():
             setattr(self, attr, val)
+        self.vm.observer.add(self.on_mdirty)
 
         self.reset_states()
 
@@ -41,6 +42,12 @@ class Audio(ILayer):
         self.state = AudioState()
         for button in Buttons:
             self.vm.button[button].stateonly = getattr(AudioState, button.name)
+
+    def on_mdirty(self):
+        """Handle Voicemeeter dirty event"""
+        self.logger.debug('Voicemeeter state changed (mdirty event)')
+        for button in Buttons:
+            setattr(self.state, button.name, self.vm.button[button].stateonly)
 
     def mute_mics(self):
         self.state.mute_mics = not self.state.mute_mics

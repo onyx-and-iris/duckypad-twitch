@@ -58,7 +58,7 @@ def run():
     xair_config = configuration.get('xair')
 
     with (
-        voicemeeterlib.api('potato') as vm,
+        voicemeeterlib.api('potato', mdirty=True) as vm,
         xair_api.connect('MR18', **xair_config) as mixer,
         duckypad_twitch.connect(vm=vm, mixer=mixer) as duckypad,
     ):
