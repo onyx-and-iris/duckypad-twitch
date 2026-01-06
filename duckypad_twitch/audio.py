@@ -73,11 +73,13 @@ class Audio(ILayer):
             self.vm.bus[VMBuses.iris_mic].mute = True
             self.vm.strip[VMStrips.onyx_pc].gain = -3
             self.vm.strip[VMStrips.iris_pc].gain = -3
+            self.vm.strip[VMStrips.comms].gain = -6
             self.vm.strip[VMStrips.pretzel].gain = -3
             self.logger.info('Only Stream Enabled')
         else:
             self.vm.strip[VMStrips.onyx_pc].gain = 0
             self.vm.strip[VMStrips.iris_pc].gain = 0
+            self.vm.strip[VMStrips.comms].gain = 0
             self.vm.strip[VMStrips.pretzel].gain = 0
             self.vm.bus[VMBuses.onyx_mic].mute = False
             self.vm.bus[VMBuses.iris_mic].mute = False
