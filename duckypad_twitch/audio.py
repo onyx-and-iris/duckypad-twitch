@@ -44,10 +44,34 @@ class Audio(ILayer):
             self.vm.button[button].stateonly = getattr(AudioState, button.name)
 
     def on_mdirty(self):
-        """Handle Voicemeeter dirty event"""
+        """Callback for Voicemeeter mdirty events.
+
+
+        This method keeps the DuckyPad state in sync with changes made from the Stream Deck"""
         self.logger.debug('Voicemeeter state changed (mdirty event)')
         for button in Buttons:
-            setattr(self.state, button.name, self.vm.button[button].stateonly)
+            current_value = self.vm.button[button].stateonly
+            if getattr(self.state, button.name) != current_value:
+                match button.name:
+                    case 'mute_mics':
+                        if current_value:
+                            self.logger.info('Mics Muted')
+                        else:
+                            self.logger.info('Mics Unmuted')
+                    case 'only_discord':
+                        if current_value:
+                            self.mixer.strip[XAirStrips.comms].send[XAirBuses.stream_mix].level = -90
+                            self.logger.info('Only Discord Enabled')
+                        else:
+                            self.mixer.strip[XAirStrips.comms].send[XAirBuses.stream_mix].level = -24
+                            self.logger.info('Only Discord Disabled')
+                    case 'only_stream':
+                        if current_value:
+                            self.logger.info('Only Stream Enabled')
+                        else:
+                            self.logger.info('Only Stream Disabled')
+
+            setattr(self.state, button.name, current_value)
 
     def mute_mics(self):
         self.state.mute_mics = not self.state.mute_mics
