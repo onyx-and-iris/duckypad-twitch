@@ -80,6 +80,7 @@ class Audio(ILayer):
                             self.logger.info('Onyx mic has been patched')
                         else:
                             self.logger.info('Onyx mic has been unpatched')
+                    case 'patch_iris':
                         if current_value:
                             self.logger.info('Iris mic has been patched')
                         else:
