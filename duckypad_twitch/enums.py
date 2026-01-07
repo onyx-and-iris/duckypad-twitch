@@ -1,6 +1,8 @@
 from enum import IntEnum
 
-Buttons = IntEnum('Buttons', 'mute_mics only_discord only_stream', start=0)
+Buttons = IntEnum(
+    'Buttons', 'mute_mics only_discord only_stream sound_test patch_onyx patch_iris mute_game_pcs', start=0
+)
 
 # Voicemeeter Channels
 VMStrips = IntEnum('Strips', 'onyx_mic iris_mic onyx_pc iris_pc st_input_5 system comms pretzel', start=0)

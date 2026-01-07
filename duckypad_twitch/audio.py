@@ -70,6 +70,25 @@ class Audio(ILayer):
                             self.logger.info('Only Stream Enabled')
                         else:
                             self.logger.info('Only Stream Disabled')
+                    case 'sound_test':
+                        if current_value:
+                            self.logger.info('Sound Test Enabled')
+                        else:
+                            self.logger.info('Sound Test Disabled')
+                    case 'patch_onyx':
+                        if current_value:
+                            self.logger.info('Onyx mic has been patched')
+                        else:
+                            self.logger.info('Onyx mic has been unpatched')
+                        if current_value:
+                            self.logger.info('Iris mic has been patched')
+                        else:
+                            self.logger.info('Iris mic has been unpatched')
+                    case 'mute_game_pcs':
+                        if current_value:
+                            self.logger.info('Game PCs Muted')
+                        else:
+                            self.logger.info('Game PCs Unmuted')
 
             setattr(self.state, button.name, current_value)
 
@@ -162,6 +181,7 @@ class Audio(ILayer):
             self.vm.strip[VMStrips.onyx_mic].apply({'A1': False, 'B1': True, 'B3': True, 'mute': True})
             self.vm.strip[VMStrips.iris_mic].apply({'A1': False, 'B2': True, 'B3': True, 'mute': True})
             self.logger.info('Sound Test Disabled')
+        self.vm.button[Buttons.sound_test].stateonly = self.state.sound_test
 
     @ensure_mixer_fadeout
     def stage_onyx_mic(self):
@@ -205,6 +225,7 @@ class Audio(ILayer):
         else:
             self.vm.patch.asio[0].set(0)
             self.logger.info('Onyx mic has been unpatched')
+        self.vm.button[Buttons.patch_onyx].stateonly = self.state.patch_onyx
 
     def patch_iris(self):
         self.state.patch_iris = not self.state.patch_iris
@@ -214,6 +235,7 @@ class Audio(ILayer):
         else:
             self.vm.patch.asio[2].set(0)
             self.logger.info('Iris mic has been unpatched')
+        self.vm.button[Buttons.patch_iris].stateonly = self.state.patch_iris
 
     def mute_game_pcs(self):
         self.state.mute_game_pcs = not self.state.mute_game_pcs
@@ -223,6 +245,7 @@ class Audio(ILayer):
         else:
             self.mixer.strip[XAirStrips.game_pcs].send[XAirBuses.stream_mix].level = -24
             self.logger.info('Game PCs Unmuted')
+        self.vm.button[Buttons.mute_game_pcs].stateonly = self.state.mute_game_pcs
 
     ### Workstation and TV Audio Routing via VBAN ###
 
