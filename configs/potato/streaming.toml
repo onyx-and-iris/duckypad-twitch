@@ -146,7 +146,7 @@ gain = 0.0
 mode = "normal"
 
 [bus-1]
-label = "ASIO [1,2]"
+label = "System"
 mono = false
 eq.on = false
 mute = false
@@ -154,7 +154,7 @@ gain = 0.0
 mode = "normal"
 
 [bus-2]
-label = "ASIO [3,4]"
+label = "Comms"
 mono = false
 eq.on = false
 mute = false
@@ -162,7 +162,7 @@ gain = 0.0
 mode = "normal"
 
 [bus-3]
-label = "ASIO [5,6]"
+label = "Pretzel"
 mono = false
 eq.on = false
 mute = false
@@ -170,7 +170,7 @@ gain = 0.0
 mode = "normal"
 
 [bus-4]
-label = "ASIO [7,8]"
+label = "GAME PCs"
 mono = false
 eq.on = false
 mute = false
