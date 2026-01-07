@@ -241,10 +241,10 @@ class Audio(ILayer):
     def mute_game_pcs(self):
         self.state.mute_game_pcs = not self.state.mute_game_pcs
         if self.state.mute_game_pcs:
-            self.mixer.strip[XAirStrips.game_pcs].send[XAirBuses.stream_mix].level = -90
+            self.vm.bus[VMBuses.game_pcs].mute = True
             self.logger.info('Game PCs Muted')
         else:
-            self.mixer.strip[XAirStrips.game_pcs].send[XAirBuses.stream_mix].level = -24
+            self.vm.bus[VMBuses.game_pcs].mute = False
             self.logger.info('Game PCs Unmuted')
         self.vm.button[Buttons.mute_game_pcs].stateonly = self.state.mute_game_pcs
 
