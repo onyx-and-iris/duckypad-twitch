@@ -1,6 +1,6 @@
 import logging
 
-from .enums import VMStrips
+from .enums import VMBuses, VMStrips
 from .layer import ILayer
 from .states import SceneState
 
@@ -40,8 +40,7 @@ class Scene(ILayer):
     def dual_stream(self):
         ENABLE_PC = {
             'mute': False,
-            'A5': True,
-            'gain': 0,
+            f'A{VMBuses.game_pcs + 1}': True,  # Voicemeeter A output is 1-indexed
         }
         self.vm.strip[VMStrips.onyx_pc].apply(ENABLE_PC)
         self.vm.strip[VMStrips.iris_pc].apply(ENABLE_PC)
