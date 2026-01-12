@@ -6,7 +6,7 @@ Buttons = IntEnum(
 
 # Voicemeeter Channels
 VMStrips = IntEnum('Strips', 'onyx_mic iris_mic onyx_pc iris_pc st_input_5 system comms pretzel', start=0)
-VMBuses = IntEnum('Buses', 'system comms pretzel game_pcs onyx_mic iris_mic both_mics', start=1)
+VMBuses = IntEnum('Buses', 'system comms pretzel game_pcs output_5 onyx_mic iris_mic both_mics', start=0)
 
 # VBAN Channels
 VBANChannels = IntEnum('VBANChannels', 'onyx_mic iris_mic comms workstation', start=0)
