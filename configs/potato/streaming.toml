@@ -138,14 +138,6 @@ gain = 0.0
 limit = 0
 
 [bus-0]
-label = "MR18"
-mono = false
-eq.on = false
-mute = false
-gain = 0.0
-mode = "normal"
-
-[bus-1]
 label = "System"
 mono = false
 eq.on = false
@@ -153,7 +145,7 @@ mute = false
 gain = 0.0
 mode = "normal"
 
-[bus-2]
+[bus-1]
 label = "Comms"
 mono = false
 eq.on = false
@@ -161,7 +153,7 @@ mute = false
 gain = 0.0
 mode = "normal"
 
-[bus-3]
+[bus-2]
 label = "Pretzel"
 mono = false
 eq.on = false
@@ -169,8 +161,16 @@ mute = false
 gain = 0.0
 mode = "normal"
 
-[bus-4]
+[bus-3]
 label = "GAME PCs"
+mono = false
+eq.on = false
+mute = false
+gain = 0.0
+mode = "normal"
+
+[bus-4]
+label = ""
 mono = false
 eq.on = false
 mute = false
