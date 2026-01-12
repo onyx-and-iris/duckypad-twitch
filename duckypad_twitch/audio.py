@@ -164,20 +164,21 @@ class Audio(ILayer):
 
         self.state.sound_test = not self.state.sound_test
         if self.state.sound_test:
-            self.vm.strip[VMStrips.onyx_mic].apply({'A1': True, 'B1': False, 'B3': False, 'mute': False})
-            self.vm.strip[VMStrips.iris_mic].apply({'A1': True, 'B2': False, 'B3': False, 'mute': False})
-            self.vm.vban.outstream[VBANChannels.onyx_mic].on = True
-            self.vm.vban.outstream[VBANChannels.iris_mic].on = True
-            self.vm.vban.outstream[VBANChannels.onyx_mic].route = 0
-            self.vm.vban.outstream[VBANChannels.iris_mic].route = 0
+            self.vm.strip[VMStrips.onyx_mic].apply({'A5': True, 'B1': False, 'B3': False, 'mute': False})
+            self.vm.strip[VMStrips.iris_mic].apply({'A5': True, 'B2': False, 'B3': False, 'mute': False})
+            self.vm.bus[VMBuses.game_pcs].mute = True
+            self.vm.vban.outstream[VBANChannels.onyx_mic].apply({'on': True, 'route': 4})
+            self.vm.vban.outstream[VBANChannels.iris_mic].apply({'on': True, 'route': 4})
             toggle_soundtest(ENABLE_SOUNDTEST)
             self.logger.info('Sound Test Enabled')
         else:
             toggle_soundtest(DISABLE_SOUNDTEST)
             self.vm.vban.outstream[VBANChannels.onyx_mic].route = 5
             self.vm.vban.outstream[VBANChannels.iris_mic].route = 6
-            self.vm.strip[VMStrips.onyx_mic].apply({'A1': False, 'B1': True, 'B3': True, 'mute': True})
-            self.vm.strip[VMStrips.iris_mic].apply({'A1': False, 'B2': True, 'B3': True, 'mute': True})
+            self.vm.bus[VMBuses.game_pcs].mute = False
+            self.vm.strip[VMStrips.onyx_mic].apply({'A5': False, 'B1': True, 'B3': True, 'mute': True})
+            self.vm.strip[VMStrips.iris_mic].apply({'A5': False, 'B2': True, 'B3': True, 'mute': True})
+            self.vm.button[Buttons.mute_mics].stateonly = True
             self.logger.info('Sound Test Disabled')
         self.vm.button[Buttons.sound_test].stateonly = self.state.sound_test
 
@@ -281,16 +282,16 @@ class Audio(ILayer):
 
         if new_state:
             with vban_cmd.api('potato', outbound=True, **target_conn) as vban:
-                vban.vban.instream[2].on = True
+                vban.vban.instream[6].on = True
             self.vm.strip[5].gain = -6
-            self.vm.vban.outstream[3].on = True
+            self.vm.vban.outstream[2].on = True
             self._fade_mixer(-90, fade_in=False)
             self.logger.info(f'Workstation audio routed to {target_name}')
         else:
             with vban_cmd.api('potato', outbound=True, **target_conn) as vban:
-                vban.vban.instream[2].on = False
+                vban.vban.instream[6].on = False
             self.vm.strip[5].gain = 0
-            self.vm.vban.outstream[3].on = False
+            self.vm.vban.outstream[2].on = False
             self._fade_mixer(-36, fade_in=True)
             self.logger.info('Workstation audio routed back to monitor speakers')
 
@@ -317,7 +318,7 @@ class Audio(ILayer):
                 vban_tv.strip[3].A1 = False
                 vban_tv.strip[3].gain = -6
                 vban_tv.vban.outstream[0].on = True
-                vban_target.vban.instream[3].on = True
+                vban_target.vban.instream[7].on = True
             self.logger.info(f'TV audio routed to {target_name}')
         else:
             with (
@@ -327,7 +328,7 @@ class Audio(ILayer):
                 vban_tv.strip[3].A1 = True
                 vban_tv.strip[3].gain = 0
                 vban_tv.vban.outstream[0].on = False
-                vban_target.vban.instream[3].on = False
+                vban_target.vban.instream[7].on = False
             self.logger.info(f'TV audio routing to {target_name} disabled')
 
     def toggle_tv_audio_to_onyx(self):
