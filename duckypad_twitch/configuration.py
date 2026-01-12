@@ -18,3 +18,14 @@ with open(configpath, 'rb') as f:
 def get(name):
     if name in configuration:
         return configuration[name]
+
+
+def mic(name):
+    assert 'microphones' in configuration, 'No microphones defined in configuration'
+
+    try:
+        mic_key = configuration['microphones'][name]
+        mic_cfg = configuration['microphone'][mic_key]
+        return mic_cfg
+    except KeyError as e:
+        raise KeyError(f'Microphone configuration for "{name}" not found') from e

@@ -15,9 +15,6 @@ logger = logging.getLogger(__name__)
 class Audio(ILayer):
     """Audio concrete class"""
 
-    DCM8_MAX_GAIN = 20  # SE Electronics DCM8 max gain
-    TLM102_MAX_GAIN = 30  # Neumann TLM102 max gain
-
     def __init__(self, duckypad, **kwargs):
         super().__init__(duckypad)
         for attr, val in kwargs.items():
@@ -186,37 +183,51 @@ class Audio(ILayer):
 
     @ensure_mixer_fadeout
     def stage_onyx_mic(self):
-        """Gain stage SE Electronics DCM8 with phantom power"""
-        self.mixer.headamp[XAirStrips.onyx_mic].phantom = True
-        for i in range(Audio.DCM8_MAX_GAIN + 1):
+        """Gain stage onyx mic"""
+        config = configuration.mic('onyx')
+
+        self.mixer.headamp[XAirStrips.onyx_mic].phantom = config['phantom']
+        for i in range(config['gain'] + 1):
             self.mixer.headamp[XAirStrips.onyx_mic].gain = i
             time.sleep(0.1)
         self.logger.info('Onyx Mic Staged with Phantom Power')
 
     @ensure_mixer_fadeout
     def stage_iris_mic(self):
-        """Gain stage TLM102 with phantom power"""
-        self.mixer.headamp[XAirStrips.iris_mic].phantom = True
-        for i in range(Audio.TLM102_MAX_GAIN + 1):
+        """Gain stage iris mic"""
+        config = configuration.mic('iris')
+
+        self.mixer.headamp[XAirStrips.iris_mic].phantom = config['phantom']
+        for i in range(config['gain'] + 1):
             self.mixer.headamp[XAirStrips.iris_mic].gain = i
             time.sleep(0.1)
         self.logger.info('Iris Mic Staged with Phantom Power')
 
     def unstage_onyx_mic(self):
-        """Unstage SE Electronics DCM8 and disable phantom power"""
-        for i in reversed(range(Audio.DCM8_MAX_GAIN + 1)):
+        """Unstage onyx mic, if phantom power was enabled, disable it"""
+        config = configuration.mic('onyx')
+
+        for i in reversed(range(config['gain'] + 1)):
             self.mixer.headamp[XAirStrips.onyx_mic].gain = i
             time.sleep(0.1)
-        self.mixer.headamp[XAirStrips.onyx_mic].phantom = False
-        self.logger.info('Onyx Mic Unstaged and Phantom Power Disabled')
+        if config['phantom']:
+            self.mixer.headamp[XAirStrips.onyx_mic].phantom = False
+            self.logger.info('Onyx Mic Unstaged and Phantom Power Disabled')
+        else:
+            self.logger.info('Onyx Mic Unstaged')
 
     def unstage_iris_mic(self):
-        """Unstage TLM102 and disable phantom power"""
-        for i in reversed(range(Audio.TLM102_MAX_GAIN + 1)):
+        """Unstage iris mic, if phantom power was enabled, disable it"""
+        config = configuration.mic('iris')
+
+        for i in reversed(range(config['gain'] + 1)):
             self.mixer.headamp[XAirStrips.iris_mic].gain = i
             time.sleep(0.1)
-        self.mixer.headamp[XAirStrips.iris_mic].phantom = False
-        self.logger.info('Iris Mic Unstaged and Phantom Power Disabled')
+        if config['phantom']:
+            self.mixer.headamp[XAirStrips.iris_mic].phantom = False
+            self.logger.info('Iris Mic Unstaged and Phantom Power Disabled')
+        else:
+            self.logger.info('Iris Mic Unstaged')
 
     def patch_onyx(self):
         self.state.patch_onyx = not self.state.patch_onyx
