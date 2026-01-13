@@ -150,6 +150,7 @@ class Audio(ILayer):
         ENABLE_SOUNDTEST = {
             'A1': True,
             'A2': True,
+            'A4': False,
             'B1': False,
             'B2': False,
             'mono': True,
@@ -157,6 +158,7 @@ class Audio(ILayer):
         DISABLE_SOUNDTEST = {
             'A1': False,
             'A2': False,
+            'A4': True,
             'B1': True,
             'B2': True,
             'mono': False,
