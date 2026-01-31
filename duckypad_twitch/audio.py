@@ -264,14 +264,29 @@ class Audio(ILayer):
 
     ### Workstation and TV Audio Routing via VBAN ###
 
-    def _fade_mixer(self, target_fader, fade_in=True):
-        """Fade the mixer's fader to the target level."""
-        current_fader = self.mixer.lr.mix.fader
-        step = 1 if fade_in else -1
-        while (fade_in and current_fader < target_fader) or (not fade_in and current_fader > target_fader):
-            current_fader += step
-            self.mixer.lr.mix.fader = current_fader
-            time.sleep(0.05)
+    def __fadein_main(self, target_level: float, duration: float = 5.0):
+        current_level = self.mixer.lr.mix.fader
+        level_difference = abs(target_level - current_level)
+        steps = max(10, min(100, int(level_difference)))
+        step_duration = duration / steps
+        level_step = (target_level - current_level) / steps
+
+        for _ in range(steps):
+            current_level += level_step
+            self.mixer.lr.mix.fader = current_level
+            time.sleep(step_duration)
+
+    def __fadeout_main(self, target_level: float, duration: float = 5.0):
+        current_level = self.mixer.lr.mix.fader
+        level_difference = abs(current_level - target_level)
+        steps = max(10, min(100, int(level_difference)))
+        step_duration = duration / steps
+        level_step = (current_level - target_level) / steps
+
+        for _ in range(steps):
+            current_level -= level_step
+            self.mixer.lr.mix.fader = current_level
+            time.sleep(step_duration)
 
     def _toggle_workstation_routing(self, state_attr, target_name, vban_config_key):
         """Toggle routing of workstation audio to either Onyx or Iris via VBAN."""
@@ -287,14 +302,14 @@ class Audio(ILayer):
                 vban.vban.instream[6].on = True
             self.vm.strip[5].gain = -6
             self.vm.vban.outstream[2].on = True
-            self._fade_mixer(-90, fade_in=False)
+            self.__fadeout_main(-90)
             self.logger.info(f'Workstation audio routed to {target_name}')
         else:
             with vban_cmd.api('potato', outbound=True, **target_conn) as vban:
                 vban.vban.instream[6].on = False
             self.vm.strip[5].gain = 0
             self.vm.vban.outstream[2].on = False
-            self._fade_mixer(-36, fade_in=True)
+            self.__fadein_main(-24)
             self.logger.info('Workstation audio routed back to monitor speakers')
 
     def toggle_workstation_to_onyx(self):
